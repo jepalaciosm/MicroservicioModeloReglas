@@ -1,5 +1,7 @@
 package com.bancolombia.MSModeloReglas.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,16 +9,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bancolombia.MSModeloReglas.entities.ComercialEntity;
 import com.bancolombia.MSModeloReglas.service.IComercialService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
-@RequestMapping("/api/asignacionclietes")
+@RequestMapping("/api/asignacionclientes")
 public class UserController {
-    private final IComercialService comercialService;
+    private final IComercialService comercialService;    
 
     public UserController(IComercialService comercialService){
-        this.comercialService = comercialService;
+        this.comercialService = comercialService;        
     }
 
     @GetMapping("/saludo")
@@ -36,4 +41,10 @@ public class UserController {
     public String comercial(){
         return comercialService.nombreComercial();
     }
+
+    @GetMapping("/encontrarcomerciales")
+    public List<ComercialEntity> getMethodName() {
+        return comercialService.imprimirComerciales();
+    }
+    
 }
