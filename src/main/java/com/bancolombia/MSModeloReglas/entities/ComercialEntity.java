@@ -16,17 +16,30 @@ public class ComercialEntity {
     
     @Column(name="nombre_comercial")
     private String name;
-
+    private long cedula;
     private String lider;
+
 
     
 
     public ComercialEntity() {
     }
 
-    public ComercialEntity(long id, String name, String lider) {
+    
+
+
+
+
+    public ComercialEntity(long id, String name, long cedula, String lider) {
         this.id = id;
         this.name = name;
+        this.cedula = cedula;
+        this.lider = lider;
+    }
+
+    public ComercialEntity( String name, long cedula, String lider) {        
+        this.name = name;
+        this.cedula = cedula;
         this.lider = lider;
     }
 
@@ -34,31 +47,54 @@ public class ComercialEntity {
         return id;
     }
 
+
     public void setId(long id) {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return "ComercialEntity [id=" + id + ", name=" + name + ", lider=" + lider + "]";
-    }
+
+
 
     public String getName() {
         return name;
     }
 
+
+
+
     public void setName(String name) {
         this.name = name;
     }
+
+
+
+
+    public long getCedula() {
+        return cedula;
+    }
+
+
+
+
+    public void setCedula(long cedula) {
+        this.cedula = cedula;
+    }
+
+
+
 
     public String getLider() {
         return lider;
     }
 
+
+
+
     public void setLider(String lider) {
         this.lider = lider;
     }
 
+    
     
     
 

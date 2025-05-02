@@ -23,4 +23,11 @@ public class ComercialServiceImpl implements IComercialService {
     public List<ComercialEntity> imprimirComerciales(){
         return (List<ComercialEntity>) repository.findAll();
     }
+
+    @Override
+    public ComercialEntity crearComercial(String name, long cedula, String lider) {
+        ComercialEntity comercial = new ComercialEntity(  name,  cedula,  lider);       
+
+        return repository.save(comercial);
+    }
 }

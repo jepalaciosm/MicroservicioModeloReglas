@@ -5,5 +5,6 @@ import java.util.List;
 public interface IComercialService {
     String nombreComercial();
     List<ComercialEntity> imprimirComerciales();
+    ComercialEntity crearComercial (String name, long cedula, String lider);
 }
 
