@@ -56,5 +56,29 @@ public class UserController {
         // ComercialEntity nuevoComercial = comercialService.crearComercial(comercial);
         // return ResponseEntity.ok(nuevoComercial);
     }
+        // ...existing code...
     
+    @PutMapping("/actualizarcomercial/{cedula}")
+    public ResponseEntity<ComercialEntity> actualizarComercial(@PathVariable("cedula") long cedula, 
+                                                             @RequestBody ComercialEntity comercial) {
+        ComercialEntity comercialActualizado = comercialService.actualizarComercial(cedula, comercial);
+        
+        if (comercialActualizado != null) {
+            return ResponseEntity.ok(comercialActualizado);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+    @DeleteMapping("/eliminarcomercial/{cedula}")
+    public ResponseEntity<Void> eliminarComercial(@PathVariable("cedula") long cedula) {
+        boolean eliminado = comercialService.eliminarComercial(cedula);
+        
+        if (eliminado) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    // ...existing code...
 }

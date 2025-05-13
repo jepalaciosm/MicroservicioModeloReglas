@@ -30,4 +30,34 @@ public class ComercialServiceImpl implements IComercialService {
 
         return repository.save(comercial);
     }
+
+        // In ComercialServiceImpl.java or similar
+    @Override
+    public ComercialEntity actualizarComercial(long cedula, ComercialEntity comercial) {
+        ComercialEntity existente = repository.findById(cedula).orElse(null);
+        if (existente != null) {
+            existente.setName(comercial.getName());
+            existente.setLider(comercial.getLider());
+            return repository.save(existente);
+        }
+        return null;
+        // Buscar el comercial existente por cédula
+        // Si existe, actualizar sus datos y guardarlo
+        // Si no existe, retornar null
+    }
+    
+    @Override
+    public boolean eliminarComercial(long cedula) {
+        // Buscar el comercial existente por cédula
+        // Si existe, eliminarlo y retornar true
+        // Si no existe, retornar false
+        ComercialEntity existente = repository.findById(cedula).orElse(null);
+        if (existente != null) {
+            repository.delete(existente);
+            return true;
+        }
+        return false;
+    }
+
+
 }
