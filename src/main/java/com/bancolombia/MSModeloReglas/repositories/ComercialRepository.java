@@ -1,7 +1,6 @@
 package com.bancolombia.MSModeloReglas.repositories;
-import org.springframework.data.repository.CrudRepository;
-import com.bancolombia.MSModeloReglas.entities.ComercialEntity;
+import com.bancolombia.MSModeloReglas.entities.Comercial;
 
-public interface ComercialRepository extends CrudRepository<ComercialEntity, Long> {
-
+@Repository
+public interface ComercialRepository extends JpaRepository<Comercial, Long> {
 }
