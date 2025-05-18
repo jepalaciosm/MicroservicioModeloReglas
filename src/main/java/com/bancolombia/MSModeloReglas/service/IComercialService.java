@@ -1,14 +1,20 @@
 package com.bancolombia.MSModeloReglas.service;
-import com.bancolombia.MSModeloReglas.entities.ComercialEntity;
-import java.util.List;
+
+
+import org.springframework.http.ResponseEntity;
+import com.bancolombia.MSModeloReglas.model.ComercialEntity;
 
 public interface IComercialService {
-    String nombreComercial();
-    List<ComercialEntity> imprimirComerciales();
-    ComercialEntity crearComercial (String name, long cedula, String lider);
+    ResponseEntity<?> saveComercial(ComercialEntity comercial);
+    ResponseEntity<?> deleteComercial(Long id);    
+    ResponseEntity<?> updateComercial(Long id, ComercialEntity comercial);
+    ResponseEntity<?> findComercialById(Long id);
+    // String nombreComercial();
+    // List<ComercialEntity> imprimirComerciales();
+    // ComercialEntity crearComercial (String name, long cedula, String lider);
 
-        // In IComercialService.java
-    ComercialEntity actualizarComercial(long cedula, ComercialEntity comercial);
-    boolean eliminarComercial(long cedula);
+    //     // In IComercialService.java
+    // ComercialEntity actualizarComercial(long cedula, ComercialEntity comercial);
+    // boolean eliminarComercial(long cedula);
 }
 

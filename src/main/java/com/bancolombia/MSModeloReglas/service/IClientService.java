@@ -1,14 +1,16 @@
 package com.bancolombia.MSModeloReglas.service;
 
-import com.bancolombia.MSModeloReglas.entities.ClientEntity;
-
-
-import java.util.Optional;
-
 import org.springframework.http.ResponseEntity;
+import com.bancolombia.MSModeloReglas.model.ClientEntity;
 
 public interface IClientService {
-    public ResponseEntity<?> guardarCliente(ClientEntity cliente);
+    ResponseEntity<?> saveClient(ClientEntity client);
+    ResponseEntity<?> deleteClient(Long id);
+    ResponseEntity<?> updateClient(Long id, ClientEntity client);
+    ResponseEntity<?> findClientById(Long id);
+    ResponseEntity<?> findClientByDocument(Long id);
+    ResponseEntity<?> findAllClients();
+    //public ResponseEntity<?> guardarCliente(ClientEntity cliente);
     // public Optional<ClientEntity> buscarPorId(Long id);
 }
 

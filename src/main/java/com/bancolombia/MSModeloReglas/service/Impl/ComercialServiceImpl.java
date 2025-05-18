@@ -1,63 +1,56 @@
 package com.bancolombia.MSModeloReglas.service.Impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.bancolombia.MSModeloReglas.entities.ComercialEntity;
-import com.bancolombia.MSModeloReglas.repositories.ComercialRepository;
+import com.bancolombia.MSModeloReglas.model.ComercialEntity;
+import com.bancolombia.MSModeloReglas.repositories.IComercialRepository;
 import com.bancolombia.MSModeloReglas.service.IComercialService;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Service
 public class ComercialServiceImpl implements IComercialService {
-    @Autowired
-    private ComercialRepository repository;
+    private final IComercialRepository comercialRepository;
 
     @Override
-    public String nombreComercial(){
-        return "Comercial funcionando";
-    }
-    
-    @Override
-    public List<ComercialEntity> imprimirComerciales(){
-        return (List<ComercialEntity>) repository.findAll();
+    public ResponseEntity<?> saveComercial(ComercialEntity comercial) {
+        var newComercial = this.comercialRepository.save(comercial);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newComercial);
     }
 
     @Override
-    public ComercialEntity crearComercial(String name, long cedula, String lider) {
-        ComercialEntity comercial = new ComercialEntity(  name,  cedula,  lider);       
-
-        return repository.save(comercial);
-    }
-
-        // In ComercialServiceImpl.java or similar
-    @Override
-    public ComercialEntity actualizarComercial(long cedula, ComercialEntity comercial) {
-        ComercialEntity existente = repository.findById(cedula).orElse(null);
-        if (existente != null) {
-            existente.setName(comercial.getName());
-            existente.setLider(comercial.getLider());
-            return repository.save(existente);
+    public ResponseEntity<?> deleteComercial(Long id) {
+        if (comercialRepository.existsById(id)) {
+            comercialRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Comercial deleted successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comercial not found");
         }
-        return null;
-        // Buscar el comercial existente por cédula
-        // Si existe, actualizar sus datos y guardarlo
-        // Si no existe, retornar null
-    }
-    
-    @Override
-    public boolean eliminarComercial(long cedula) {
-        // Buscar el comercial existente por cédula
-        // Si existe, eliminarlo y retornar true
-        // Si no existe, retornar false
-        ComercialEntity existente = repository.findById(cedula).orElse(null);
-        if (existente != null) {
-            repository.delete(existente);
-            return true;
-        }
-        return false;
     }
 
+    @Override
+    public ResponseEntity<?> updateComercial(Long id, ComercialEntity comercial) {
+        if (comercialRepository.existsById(id)) {
+            comercial.setId(id);
+            ComercialEntity updatedComercial = comercialRepository.save(comercial);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedComercial);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comercial not found");
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> findComercialById(Long id) {
+        var comercial = comercialRepository.findById(id);
+        if (comercial.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body(comercial.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comercial not found");
+        }
+    }
+   
 
 }
