@@ -1,5 +1,7 @@
 package com.bancolombia.MSModeloReglas.service.Impl;
 
+import java.util.Optional;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -45,6 +47,16 @@ public class ComercialServiceImpl implements IComercialService {
     @Override
     public ResponseEntity<?> findComercialById(Long id) {
         var comercial = comercialRepository.findById(id);
+        if (comercial.isPresent()) {
+            return ResponseEntity.status(HttpStatus.OK).body(comercial.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comercial not found");
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> findComercialByDocument(long id) {
+        Optional<ComercialEntity> comercial = comercialRepository.findByDocument(id);
         if (comercial.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(comercial.get());
         } else {

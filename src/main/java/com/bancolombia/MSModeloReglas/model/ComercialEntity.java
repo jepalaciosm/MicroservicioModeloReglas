@@ -25,7 +25,7 @@ public class ComercialEntity {
     private long id;
     
     @Column(name="documento")
-    private String document;
+    private long document;
     @Column(name="nombre")
     private String full_name;
     @Column(name="documento_lider")

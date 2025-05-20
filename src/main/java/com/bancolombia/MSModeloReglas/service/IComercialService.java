@@ -9,6 +9,7 @@ public interface IComercialService {
     ResponseEntity<?> deleteComercial(Long id);    
     ResponseEntity<?> updateComercial(Long id, ComercialEntity comercial);
     ResponseEntity<?> findComercialById(Long id);
+    ResponseEntity<?> findComercialByDocument(long document);
     // String nombreComercial();
     // List<ComercialEntity> imprimirComerciales();
     // ComercialEntity crearComercial (String name, long cedula, String lider);
