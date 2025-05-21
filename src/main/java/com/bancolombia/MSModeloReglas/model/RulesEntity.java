@@ -14,19 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-// Enum para los operadores lógicos de las reglas
-enum OperadorLogico {
-    IGUAL_A,          // ==
-    NO_IGUAL_A,       // !=
-    MAYOR_QUE,        // >
-    MENOR_QUE,        // <
-    MAYOR_O_IGUAL_QUE, // >=
-    MENOR_O_IGUAL_QUE, // <=
-    CONTIENE,         // String.contains()
-    NO_CONTIENE,      // !String.contains()
-    EN_LISTA,         // Valor está en una lista separada por comas (ej: "A,B,C")
-    NO_EN_LISTA      // Valor NO está en una lista separada por comas
-}
+
 
 @Entity
 @Data
@@ -87,6 +75,19 @@ public class RulesEntity {
     @Column(length = 500)
     private String descripcionNoTecnica;
 
+    // Enum para los operadores lógicos de las reglas
+    public enum OperadorLogico {
+        IGUAL_A,          // ==
+        NO_IGUAL_A,       // !=
+        MAYOR_QUE,        // >
+        MENOR_QUE,        // <
+        MAYOR_O_IGUAL_QUE, // >=
+        MENOR_O_IGUAL_QUE, // <=
+        CONTIENE,         // String.contains()
+        NO_CONTIENE,      // !String.contains()
+        EN_LISTA,         // Valor está en una lista separada por comas (ej: "A,B,C")
+        NO_EN_LISTA      // Valor NO está en una lista separada por comas
+    }
 
 
 }
