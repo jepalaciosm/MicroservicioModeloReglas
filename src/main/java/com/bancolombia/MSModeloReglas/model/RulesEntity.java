@@ -35,7 +35,7 @@ enum OperadorLogico {
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "maestra_reglas")
-public class ReglasEntity {
+public class RulesEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -59,24 +59,24 @@ public class ReglasEntity {
     @Column(nullable = false)
     private String valorCondicion1; // Valor contra el cual se compara el campo del cliente
 
-     @Column(nullable = false)
+     @Column(nullable = true)
     private String campoCliente2; // Nombre del campo en la entidad Cliente (o DTO) a evaluar. Ej: "ubicacionGeografica"
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private OperadorLogico operador2;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String valorCondicion2;
 
-     @Column(nullable = false)
+     @Column(nullable = true)
     private String campoCliente3; // Nombre del campo en la entidad Cliente (o DTO) a evaluar. Ej: "ubicacionGeografica"
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = true)
     private OperadorLogico operador3;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String valorCondicion3;
 
     @Column(nullable = false)
