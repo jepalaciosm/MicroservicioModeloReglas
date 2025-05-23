@@ -37,7 +37,13 @@ public class RulesController {
     @PostMapping("/create")
     public ResponseEntity<?> createRules(@RequestBody RulesEntity reglas) {
         return rulesService.saveRules(reglas);
-    }   
+    }
+    
+    @GetMapping("/findBySegment")
+    public List<RulesEntity> getMethodName(@RequestBody String segmento) {
+        return rulesService.findAllRulesActiveBySegment(segmento);
+    }
+    
     
     @GetMapping("/validate")
     public ResponseEntity<?> findRulesByClient(@PathVariable("id") Long id) {

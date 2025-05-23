@@ -3,6 +3,7 @@ package com.bancolombia.MSModeloReglas.service.Impl;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.bancolombia.MSModeloReglas.model.ClientEntity;
 import com.bancolombia.MSModeloReglas.model.RulesEntity;
+import com.bancolombia.MSModeloReglas.repositories.IClientRepository;
+import com.bancolombia.MSModeloReglas.repositories.IComercialRepository;
 import com.bancolombia.MSModeloReglas.repositories.IRulesRepository;
 import com.bancolombia.MSModeloReglas.service.IRulesService;
 
@@ -20,7 +23,8 @@ import lombok.AllArgsConstructor;
 @Service
 public class RulesServiceImpl  implements  IRulesService{
     private final IRulesRepository rulesRepository;
-    // private final IComercialService comercialService;
+    private final IComercialRepository comercialRepository;
+    private final IClientRepository clientRepository;
     // private final IComercialRepository comercialRepository;
     // private final IClientRepository clientRepository;
     // private final IClientService clientService;
@@ -49,6 +53,14 @@ public class RulesServiceImpl  implements  IRulesService{
     @Override
     public List<RulesEntity> findAllRulesActive() {
         return this.rulesRepository.findByActivaTrueOrderByPrioridadAsc()
+                .stream()
+                .map(rules -> rules)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RulesEntity> findAllRulesActiveBySegment(String segment) {
+        return this.rulesRepository.findActiveRulesBySegmentAsc(segment)
                 .stream()
                 .map(rules -> rules)
                 .collect(Collectors.toList());
@@ -103,10 +115,11 @@ public class RulesServiceImpl  implements  IRulesService{
                                         .contains(clienteStr.toLowerCase());
                 default:  return false;
                 }
-            }       
+            } 
 
         }
         return true;
     }
 
+   
 }

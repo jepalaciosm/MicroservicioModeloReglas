@@ -9,8 +9,10 @@ import com.bancolombia.MSModeloReglas.model.RulesEntity;
 
 public interface IRulesService {
     ResponseEntity<?> saveRules(RulesEntity rules);
-    // ResponseEntity<?> AssignClient(ClientEntity client);
+    //ResponseEntity<?> AssignClient(long document);
     boolean OKRule(ClientEntity client, RulesEntity rules);
     List<RulesEntity> findAllRulesActive();
+    List<RulesEntity> findAllRulesActiveBySegment(String segment);
     ResponseEntity<?> findRulesByID(Long id);
+    
 }
