@@ -28,7 +28,7 @@ public class AssigmentServiceImpl implements IAssigmentService {
     private final IAssigmentResultRepository assigmentResultRepository;
    
     @Override
-    public ResponseEntity<?> AssignClient(long document, int test) {
+    public ResponseEntity<?> AssignClient(long document) {
         Optional<ClientEntity> response = clientRepository.findByDocument(document);
         if (response.isPresent()) {
             ClientEntity client = response.get();                        
@@ -42,9 +42,14 @@ public class AssigmentServiceImpl implements IAssigmentService {
                     //client.setIdComercialAsignado(rule.getIdComercialAsignado());
                     // Guardar el cliente actualizado en la base de datos
                     // clientRepository.save(client);
-                    assigmentResultRepository.save(new AssigmentResultEntity(client.getDocument(), client.getFull_name(), rule.getIdComercialAsignado(), comercialRepository.findByDocument(rule.getIdComercialAsignado()).get().getFull_name(), rule.getId(), rule.getNombreRegla()));
-                    if (test==1){return ResponseEntity.ok(rule.getIdComercialAsignado());}
-                    return ResponseEntity.ok(comercialRepository.findByDocument(rule.getIdComercialAsignado()));
+                    if (comercialRepository.findByDocument(rule.getIdComercialAsignado()).isPresent()) {
+                        assigmentResultRepository.save(new AssigmentResultEntity(client.getDocument(), client.getFull_name(), rule.getIdComercialAsignado(), comercialRepository.findByDocument(rule.getIdComercialAsignado()).get().getFull_name(), rule.getId(), rule.getNombreRegla()));
+                        // if (test==1){return ResponseEntity.ok(rule.getIdComercialAsignado());}
+                        return ResponseEntity.ok(comercialRepository.findByDocument(rule.getIdComercialAsignado()));
+                    } else {
+                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el comercial asignado");
+                    }
+                    
                 }
             }
             // assigmentResultRepository.save(new AssigmentResultEntity(client.getDocument(), client.getFull_name()));

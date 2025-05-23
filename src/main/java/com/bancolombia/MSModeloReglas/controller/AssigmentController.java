@@ -26,7 +26,7 @@ public class AssigmentController {
         if (document == null) {
             return ResponseEntity.badRequest().body("Document cannot be null");
         }
-        return assigmentService.AssignClient(document, 0);
+        return assigmentService.AssignClient(document);
     }  
     
     @GetMapping("/test")
