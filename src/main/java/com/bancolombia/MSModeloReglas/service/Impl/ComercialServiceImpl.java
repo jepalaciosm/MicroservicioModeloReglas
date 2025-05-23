@@ -63,6 +63,16 @@ public class ComercialServiceImpl implements IComercialService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comercial not found");
         }
     }
+
+    @Override
+    public String getFullName(long id) {
+        Optional<ComercialEntity> comercial = comercialRepository.findByDocument(id);
+        if (comercial.isPresent()) {
+            return comercial.get().getFull_name();
+        } else {
+            return "";
+        }
+    }
    
 
 }
