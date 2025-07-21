@@ -65,6 +65,16 @@ public class ComercialServiceImpl implements IComercialService {
     }
 
     @Override
+    public ResponseEntity<?> findAllComerciales() {
+        var comerciales = comercialRepository.findAll();
+        if (comerciales.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No Comerciales found");
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(comerciales);
+        }
+    }
+
+    @Override
     public String getFullName(long id) {
         Optional<ComercialEntity> comercial = comercialRepository.findByDocument(id);
         if (comercial.isPresent()) {

@@ -36,6 +36,11 @@ public class ComercialController {
         return comercialService.findComercialByDocument(document);
     }
 
+    @GetMapping("/findAll")
+    public ResponseEntity<?> findAllComerciales() {
+        return comercialService.findAllComerciales();
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteComercial(@PathVariable("id") Long id) {
         return comercialService.deleteComercial(id);

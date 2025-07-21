@@ -10,6 +10,7 @@ public interface IComercialService {
     ResponseEntity<?> updateComercial(Long id, ComercialEntity comercial);
     ResponseEntity<?> findComercialById(Long id);
     ResponseEntity<?> findComercialByDocument(long document);
+    ResponseEntity<?> findAllComerciales();
     String getFullName(long document);
     // String nombreComercial();
     // List<ComercialEntity> imprimirComerciales();
