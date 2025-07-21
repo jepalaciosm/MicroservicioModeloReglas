@@ -14,6 +14,7 @@ import com.bancolombia.MSModeloReglas.model.ClientEntity;
 import com.bancolombia.MSModeloReglas.model.RulesEntity;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,13 +30,23 @@ public class RulesController {
     private final IRulesService rulesService;
     private final IClientService clientService;
 
-    @GetMapping("/findAll")
+    @GetMapping("/findAllAcitive")
     public List<RulesEntity> findActiveRules() {
         return rulesService.findAllRulesActive();
     }
 
+    @GetMapping("/findAll")
+    public List<RulesEntity> findAllRules() {
+        return rulesService.findAllRules();
+    }
+
     @PostMapping("/create")
     public ResponseEntity<?> createRules(@RequestBody RulesEntity reglas) {
+        List<RulesEntity> activeRueles = rulesService.findAllRulesActive();
+        if (activeRueles.stream().anyMatch(rule -> rule.getPrioridad()==(reglas.getPrioridad()))
+                ) {
+            return ResponseEntity.badRequest().body("Ya existe una regla activa con la misma prioridad");
+        }
         return rulesService.saveRules(reglas);
     }
     
@@ -45,10 +56,12 @@ public class RulesController {
     }
     
     
-    @GetMapping("/validate")
-    public ResponseEntity<?> findRulesByClient(@PathVariable("id") Long id) {
-        ResponseEntity<?> response =clientService.findClientById(id);
-        ResponseEntity<?> response1 =rulesService.findRulesByID(id);
+    @GetMapping("/validate/{idCliente}/{idRegla}")
+    public ResponseEntity<?> findRulesByClient(
+            @PathVariable("idCliente") Long idCliente,
+            @PathVariable("idRegla") Long idRegla) {
+        ResponseEntity<?> response = clientService.findClientById(idCliente);
+        ResponseEntity<?> response1 = rulesService.findRulesByID(idRegla);
         if (response.getStatusCode().is2xxSuccessful() && response1.getStatusCode().is2xxSuccessful()) {
             ClientEntity client = (ClientEntity) response.getBody();
             RulesEntity rules = (RulesEntity) response1.getBody();
@@ -60,6 +73,14 @@ public class RulesController {
         }
         
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteRule(@PathVariable("id") Long id) {
+        if (!rulesService.findRulesByID(id).getStatusCode().is2xxSuccessful()) {
+            return ResponseEntity.status(404).body("Regla no encontrada");
+        }
+        return rulesService.DeleteRule(id);
+    }   
     
 
 }

@@ -51,6 +51,24 @@ public class RulesServiceImpl  implements  IRulesService{
     }
 
     @Override
+    public ResponseEntity<?> DeleteRule(Long id) {
+        if (rulesRepository.existsById(id)) {
+            rulesRepository.deleteById(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Regla eliminada correctamente");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Regla no encontrada");
+        }
+    }
+
+    @Override
+    public List<RulesEntity> findAllRules() {
+        return this.rulesRepository.findAll()
+                .stream()
+                .map(rules -> rules)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<RulesEntity> findAllRulesActive() {
         return this.rulesRepository.findByActivaTrueOrderByPrioridadAsc()
                 .stream()
