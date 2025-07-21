@@ -29,16 +29,14 @@ public class AssigmentResultEntity {
     private String comercial_full_name;
     @Column(name="id_regla")
     private long id;
-    @Column(name = "nombre_regla")
-    private String rule_name;
-
+   
     public AssigmentResultEntity(Long client_document, String client_full_name) {
         this.client_document = client_document;
         this.client_full_name = client_full_name;
         this.comercial_document = -1;
         this.comercial_full_name = "";  
         this.id = -1;
-        this.rule_name = "";
+        
     }
 
     

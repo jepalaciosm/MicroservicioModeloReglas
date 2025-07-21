@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -21,13 +23,25 @@ import lombok.AllArgsConstructor;
 public class AssigmentController {
     private final IAssigmentService assigmentService;
     
-    @GetMapping("/asignarCliente") 
+    @GetMapping("/asignClient") 
     public ResponseEntity<?> assignClient(@RequestBody Long document) {
         if (document == null) {
             return ResponseEntity.badRequest().body("Document cannot be null");
         }
         return assigmentService.AssignClient(document);
-    }  
+    }
+    
+    @GetMapping("/asignAllClients")
+    public ResponseEntity<?> asignAllClients() {
+        return assigmentService.assignAllClients();
+    }
+
+    @GetMapping("/findAllAssigments")
+    public ResponseEntity<?> findAllAssigments() {
+        return assigmentService.findAll();
+    }
+    
+    
     
     @GetMapping("/test")
     public ResponseEntity<?> test(@RequestBody String name) {
