@@ -32,7 +32,7 @@ public class AssigmentServiceImpl implements IAssigmentService {
         Optional<ClientEntity> response = clientRepository.findByDocument(document);
         if (response.isPresent()) {
             ClientEntity client = response.get();                        
-            List<RulesEntity> activeRules = rulesServiceImpl.findAllRulesActiveBySegment(client.getSegment()); 
+            List<RulesEntity> activeRules = rulesServiceImpl.findAllRulesActive(); 
             if (activeRules.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro ninguna regla activa para asignar el cliente queda sin comercial");
             }            
@@ -42,17 +42,28 @@ public class AssigmentServiceImpl implements IAssigmentService {
                     //client.setIdComercialAsignado(rule.getIdComercialAsignado());
                     // Guardar el cliente actualizado en la base de datos
                     // clientRepository.save(client);
-                    if (comercialRepository.findByDocument(rule.getIdComercialAsignado()).isPresent()) {
-                        assigmentResultRepository.save(new AssigmentResultEntity(client.getDocument(), client.getFull_name(), rule.getIdComercialAsignado(), comercialRepository.findByDocument(rule.getIdComercialAsignado()).get().getFull_name(), rule.getId()));
-                        // if (test==1){return ResponseEntity.ok(rule.getIdComercialAsignado());}
-                        return ResponseEntity.ok(comercialRepository.findByDocument(rule.getIdComercialAsignado()));
-                    } else {
-                        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro el comercial asignado");
+                    System.out.println("Cumplio la regla "+rule.getId()+" con el comercial "+rule.getIdComercialAsignado());
+                    try {                        
+                        if (comercialRepository.findByDocument(rule.getIdComercialAsignado()).isPresent()) {
+                            AssigmentResultEntity assigment = new AssigmentResultEntity(client.getDocument(), client.getFull_name(), rule.getIdComercialAsignado(), comercialRepository.findByDocument(rule.getIdComercialAsignado()).get().getFull_name(), rule.getId());
+                            assigmentResultRepository.save(assigment);
+                            // if (test==1){return ResponseEntity.ok(rule.getIdComercialAsignado());}
+                            
+                            System.out.println("Asignación exitosa para el cliente: " + client.getFull_name() );
+                            return ResponseEntity.ok(assigment);
+                        } else {
+                            AssigmentResultEntity result = new AssigmentResultEntity(client.getDocument(), client.getFull_name());
+                            saveAssigmentResult(result);
+                            System.out.println("Comercial no encontrado para el documento: " + rule.getIdComercialAsignado());
+                            
+                        }
+                    } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al asignar el comercial al cliente: " + e.getMessage());
                     }
                     
                 }
             }
-            // assigmentResultRepository.save(new AssigmentResultEntity(client.getDocument(), client.getFull_name()));
+            assigmentResultRepository.save(new AssigmentResultEntity(client.getDocument(), client.getFull_name()));
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro ninguna regla activa para asignar el cliente queda sin comercial");
     
         }
@@ -69,29 +80,31 @@ public class AssigmentServiceImpl implements IAssigmentService {
         
         for (ClientEntity client : clients) {
             ResponseEntity<?> response = AssignClient(client.getDocument());
-            if (!response.getStatusCode().is2xxSuccessful()) {
-                //creamos registro de asignacion
-                AssigmentResultEntity result = new AssigmentResultEntity(client.getDocument(), client.getFull_name());
-                saveAssigmentResult(result);
-            }else {
-                // Si la asignación fue exitosa, guardamos el resultado
-                Object responseBody = response.getBody();
-                Long comercialDocument = null;
-                String comercialFullName = null;
-                if (responseBody instanceof Optional) {
-                    Optional<?> comercialOptional = (Optional<?>) responseBody;
-                    if (comercialOptional.isPresent()) {
-                        Object comercialObj = comercialOptional.get();
-                        // Assuming comercialObj is of type ComercialEntity
-                        comercialDocument = ((com.bancolombia.MSModeloReglas.model.ComercialEntity) comercialObj).getDocument();
-                        comercialFullName = ((com.bancolombia.MSModeloReglas.model.ComercialEntity) comercialObj).getFull_name();
-                    }
-                }
-                AssigmentResultEntity result = new AssigmentResultEntity(client.getDocument(), client.getFull_name(),
-                        comercialDocument, comercialFullName,
-                        -1);
-                saveAssigmentResult(result);
-            }
+            // if (!response.getStatusCode().is2xxSuccessful()) {
+            //     //creamos registro de asignacion fallida
+            //     AssigmentResultEntity result = new AssigmentResultEntity(client.getDocument(), client.getFull_name());
+            //     saveAssigmentResult(result);
+            // }
+            //else {
+            //     // Si la asignación fue exitosa, guardamos el resultado
+            //     Object responseBody = response.getBody();
+            //     Long comercialDocument = null;
+            //     String comercialFullName = null;
+            //     if (responseBody instanceof Optional) {
+            //         Optional<?> comercialOptional = (Optional<?>) responseBody;
+            //         if (comercialOptional.isPresent()) {
+            //             Object comercialObj = comercialOptional.get();
+            //             // Assuming comercialObj is of type ComercialEntity
+            //             comercialDocument = ((com.bancolombia.MSModeloReglas.model.ComercialEntity) comercialObj).getDocument();
+            //             comercialFullName = ((com.bancolombia.MSModeloReglas.model.ComercialEntity) comercialObj).getFull_name();
+            //         }
+            //     }
+            //     // AssigmentResultEntity result = new AssigmentResultEntity(client.getDocument(), client.getFull_name(),
+            //     //         comercialDocument, comercialFullName,
+            //     //         -1);
+            //     // saveAssigmentResult(result);
+            // }
+            System.out.println("Asignación para cliente " + client.getFull_name() + ": " + response.getStatusCode());
         }
         
         return ResponseEntity.ok("Todos los clientes han sido asignados correctamente");

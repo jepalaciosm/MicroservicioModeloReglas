@@ -34,8 +34,8 @@ public class RulesEntity {
     @Column(nullable = false)
     private int prioridad; // Menor número = mayor prioridad
 
-    @Column(nullable = false)
-    private String segmento;
+    // @Column(nullable = false)
+    // private String segmento;
 
     @Column(nullable = false)
     private String campoCliente1; // Nombre del campo en la entidad Cliente (o DTO) a evaluar. Ej: "ubicacionGeografica"
@@ -86,7 +86,8 @@ public class RulesEntity {
         CONTIENE,         // String.contains()
         NO_CONTIENE,      // !String.contains()
         EN_LISTA,         // Valor está en una lista separada por comas (ej: "A,B,C")
-        NO_EN_LISTA      // Valor NO está en una lista separada por comas
+        NO_EN_LISTA,      // Valor NO está en una lista separada por comas
+        NO_APLICA        // No aplica, se usa para condiciones opcionales
     }
 
 

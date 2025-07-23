@@ -9,6 +9,9 @@ import java.util.List;
 public interface IRulesRepository extends JpaRepository<RulesEntity, Long>{
     List<RulesEntity> findByActivaTrueOrderByPrioridadAsc();
 
-    @Query("select r from RulesEntity r where r.segmento = ?1 and r.activa=true order by r.prioridad asc")
+    // @Query("select r from RulesEntity r where r.segmento = ?1 and r.activa=true order by r.prioridad asc")
+    // List<RulesEntity> findActiveRulesBySegmentAsc(String segmento);
+
+    @Query("select r from RulesEntity r where r.activa=true order by r.prioridad asc")
     List<RulesEntity> findActiveRulesBySegmentAsc(String segmento);
 }
