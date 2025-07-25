@@ -34,8 +34,8 @@ public class RulesEntity {
     @Column(nullable = false)
     private int prioridad; // Menor número = mayor prioridad
 
-    // @Column(nullable = false)
-    // private String segmento;
+    @Column(nullable = false)
+    private String producto;
 
     @Column(nullable = false)
     private String campoCliente1; // Nombre del campo en la entidad Cliente (o DTO) a evaluar. Ej: "ubicacionGeografica"
