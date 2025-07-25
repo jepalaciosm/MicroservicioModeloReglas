@@ -30,12 +30,14 @@ public class ClientEntity {
     private String full_name;
     @Column(name="region")
     private String region; // Ej: "Zona Norte", "Ciudad Capital", "Region Sur"
+    @Column(name="cod_sucursal")
+    private Integer cod_office;
     @Column(name="sucursal")
     private String office;
     @Column(name="segmento")
     private String segment; // Ej: "PYME", "Corporativo", "Empresarial"
-    @Column(name="marca_gerenciamiento")
-    private String management;
+    @Column(name="cargo")
+    private String position;
 
     
 }

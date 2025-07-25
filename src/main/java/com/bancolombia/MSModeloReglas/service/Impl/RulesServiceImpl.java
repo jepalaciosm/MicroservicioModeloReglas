@@ -111,6 +111,8 @@ public class RulesServiceImpl  implements  IRulesService{
             }
         } else if (valorCliente instanceof Integer clienteInt) {
             int valorCondicionInt = Integer.parseInt(valorCondicion);
+            System.out.println("Es numerico cliente:"+ clienteInt+"  condicion:" +valorCondicionInt+" resultado: "+clienteInt.equals(valorCondicionInt));
+            
             switch (operador) {
                 case IGUAL_A: return clienteInt.equals(valorCondicionInt);
                 case NO_IGUAL_A: return !clienteInt.equals(valorCondicionInt);
@@ -123,7 +125,7 @@ public class RulesServiceImpl  implements  IRulesService{
             
         }
 
-        return true;
+        return false;
 
     }    
 
@@ -159,7 +161,6 @@ public class RulesServiceImpl  implements  IRulesService{
         boolean condition2= false;
         if (operador2 == OperadorLogico.NO_APLICA) {
             condition2= true;
-            return condition2;
         } else {
             try {            
                 Field campoDeclarado = ClientEntity.class.getDeclaredField(rules.getCampoCliente2());
@@ -178,7 +179,6 @@ public class RulesServiceImpl  implements  IRulesService{
         boolean condition3= false;
         if (operador3 == OperadorLogico.NO_APLICA) {
             condition3= true;
-            return condition3;
         } else {
             try {            
                 Field campoDeclarado = ClientEntity.class.getDeclaredField(rules.getCampoCliente3());
