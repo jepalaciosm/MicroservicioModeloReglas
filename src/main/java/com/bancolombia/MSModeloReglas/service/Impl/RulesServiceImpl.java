@@ -96,7 +96,8 @@ public class RulesServiceImpl  implements  IRulesService{
         if(valorCliente instanceof String clienteStr){
             
             String valorCondicionStr = valorCondicion.toLowerCase();
-            System.out.println("Es string"+ clienteStr+valorCondicionStr+"  "+clienteStr.equalsIgnoreCase(valorCondicionStr));
+            System.out.println("Es string cliente:"+ clienteStr+"  condicion:" +valorCondicionStr+" resultado: "+clienteStr.equalsIgnoreCase(valorCondicionStr));
+            System.out.println("***validacion condicion igual=**"+clienteStr.equalsIgnoreCase(valorCondicionStr));
             switch(operador){
                 case IGUAL_A: return clienteStr.equalsIgnoreCase(valorCondicionStr);
                 case NO_IGUAL_A: return !clienteStr.equalsIgnoreCase(valorCondicionStr);
@@ -132,64 +133,68 @@ public class RulesServiceImpl  implements  IRulesService{
     public boolean OKRule(ClientEntity client, RulesEntity rules) {
         String valorCondicion1 = rules.getValorCondicion1();
         OperadorLogico operador1= rules.getOperador1();
+
+        String valorCondicion2 = rules.getValorCondicion2();
+        OperadorLogico operador2= rules.getOperador2();
+
+        String valorCondicion3 = rules.getValorCondicion3();
+        OperadorLogico operador3= rules.getOperador3();
         ;
-        boolean condition1= true;
+        boolean condition1= false;
         if (operador1 == OperadorLogico.NO_APLICA) {
+            condition1= true;
             return condition1;
         } else {
             try {            
-                // Obtener el valor del campo del cliente DTO
                 Field campoDeclarado = ClientEntity.class.getDeclaredField(rules.getCampoCliente1());
                 campoDeclarado.setAccessible(true); // Necesario si el campo es privado
                 Object valorCliente1 = campoDeclarado.get(client);
-                // Imprime los valores en consola
-                System.out.println("ok-valorCliente1: " + valorCliente1);
-                System.out.println("ok-valorCondicion1: " + valorCondicion1);
-                System.out.println("ok-operador1: " + operador1);
-
+                System.out.println("condition1: " + operador1);
                 condition1=valideCondition(valorCliente1, valorCondicion1, operador1);
             } catch (Exception e) {          
-            return true;
+                System.out.println("Error al validar la condición 1: " + e.getMessage());         
             }
-        }        
+        }
+        
+        boolean condition2= false;
+        if (operador2 == OperadorLogico.NO_APLICA) {
+            condition2= true;
+            return condition2;
+        } else {
+            try {            
+                Field campoDeclarado = ClientEntity.class.getDeclaredField(rules.getCampoCliente2());
+                campoDeclarado.setAccessible(true); // Necesario si el campo es privado
+                Object valorCliente2 = campoDeclarado.get(client);
+                // Imprime los valores en consola
+                System.out.println("condition2: " + operador3);
 
-        // boolean condition2= false;
-        // String valorCondicion2 = rules.getValorCondicion2();
-        // OperadorLogico operador2= rules.getOperador2();
-        // if (operador2 == OperadorLogico.NO_APLICA) {
-        //     condition2 = true;
-        // }else {
-        //     Object valorCliente2;
-        //     // Obtener el valor del campo del cliente DTO
-        //     Field campoDeclarado2 = ClientEntity.class.getDeclaredField(rules.getCampoCliente2());
-        //     campoDeclarado2.setAccessible(true); // Necesario si el campo es privado
-        //     valorCliente2 = campoDeclarado.get(client);
-        //     condition2=valideCondition(valorCliente2, valorCondicion2, operador2);
+                condition2=valideCondition(valorCliente2, valorCondicion2, operador2);
+            } catch (Exception e) {  
+                System.out.println("Error al validar la condición 2: " + e.getMessage());                 
             
-        // }
+            }
+        }
         
+        boolean condition3= false;
+        if (operador3 == OperadorLogico.NO_APLICA) {
+            condition3= true;
+            return condition3;
+        } else {
+            try {            
+                Field campoDeclarado = ClientEntity.class.getDeclaredField(rules.getCampoCliente3());
+                campoDeclarado.setAccessible(true); // Necesario si el campo es privado
+                Object valorCliente3 = campoDeclarado.get(client);
+                // Imprime los valores en consola
+                System.out.println("condition3: " + operador3);
+                condition3=valideCondition(valorCliente3, valorCondicion3, operador3);
+            } catch (Exception e) { 
+                System.out.println("Error al validar la condición 3: " + e.getMessage());         
+            
+            }
+        }
         
-        // String valorCondicion3 = rules.getValorCondicion3();
-        // OperadorLogico operador3= rules.getOperador3();
-        // Object valorCliente3;
-        // try {
-        //     // Obtener el valor del campo del cliente DTO
-        //     Field campoDeclarado = ClientEntity.class.getDeclaredField(rules.getCampoCliente3());
-        //     campoDeclarado.setAccessible(true); // Necesario si el campo es privado
-        //     valorCliente3 = campoDeclarado.get(client);
-
-        // } catch (Exception e) {          
-        //     return false;
-        //}
-
-        
-        // 
-        // boolean condition3=valideCondition(valorCliente3, valorCondicion3, operador3);
-        
-
-        return condition1 ;
-        //&& condition2;
-        //  && condition3;
+        System.out.println("ok-condition1: " + condition1 + " condition2: " + condition2 + " condition3: " + condition3);
+        return condition1 && condition2  && condition3;
     }
 
    

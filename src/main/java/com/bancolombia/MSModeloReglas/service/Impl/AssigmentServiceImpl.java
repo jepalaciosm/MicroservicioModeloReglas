@@ -38,10 +38,7 @@ public class AssigmentServiceImpl implements IAssigmentService {
             }            
             for (RulesEntity rule : activeRules) {
                 if (rulesServiceImpl.OKRule(client, rule)) {
-                    // Asignar el comercial al cliente
-                    //client.setIdComercialAsignado(rule.getIdComercialAsignado());
-                    // Guardar el cliente actualizado en la base de datos
-                    // clientRepository.save(client);
+
                     System.out.println("Cumplio la regla "+rule.getId()+" con el comercial "+rule.getIdComercialAsignado());
                     try {                        
                         if (comercialRepository.findByDocument(rule.getIdComercialAsignado()).isPresent()) {
@@ -79,32 +76,10 @@ public class AssigmentServiceImpl implements IAssigmentService {
         }
         
         for (ClientEntity client : clients) {
+            System.out.println("*******Asignando cliente: " + client.getFull_name()+"***********");
             ResponseEntity<?> response = AssignClient(client.getDocument());
-            // if (!response.getStatusCode().is2xxSuccessful()) {
-            //     //creamos registro de asignacion fallida
-            //     AssigmentResultEntity result = new AssigmentResultEntity(client.getDocument(), client.getFull_name());
-            //     saveAssigmentResult(result);
-            // }
-            //else {
-            //     // Si la asignación fue exitosa, guardamos el resultado
-            //     Object responseBody = response.getBody();
-            //     Long comercialDocument = null;
-            //     String comercialFullName = null;
-            //     if (responseBody instanceof Optional) {
-            //         Optional<?> comercialOptional = (Optional<?>) responseBody;
-            //         if (comercialOptional.isPresent()) {
-            //             Object comercialObj = comercialOptional.get();
-            //             // Assuming comercialObj is of type ComercialEntity
-            //             comercialDocument = ((com.bancolombia.MSModeloReglas.model.ComercialEntity) comercialObj).getDocument();
-            //             comercialFullName = ((com.bancolombia.MSModeloReglas.model.ComercialEntity) comercialObj).getFull_name();
-            //         }
-            //     }
-            //     // AssigmentResultEntity result = new AssigmentResultEntity(client.getDocument(), client.getFull_name(),
-            //     //         comercialDocument, comercialFullName,
-            //     //         -1);
-            //     // saveAssigmentResult(result);
-            // }
-            System.out.println("Asignación para cliente " + client.getFull_name() + ": " + response.getStatusCode());
+            
+            System.out.println("Asignación para cliente " + client.getFull_name() );
         }
         
         return ResponseEntity.ok("Todos los clientes han sido asignados correctamente");
